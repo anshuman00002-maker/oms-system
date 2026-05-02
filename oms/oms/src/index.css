@@ -1,0 +1,52 @@
+/* Resetish */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body,#root{height:100%}
+body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; background:#f5f7fb;color:#172b4d}
+
+/* Layout */
+.app-shell{min-height:100vh;display:flex;flex-direction:column}
+.main{flex:1;max-width:1100px;margin:28px auto;padding:16px}
+
+/* Header */
+.header{background:#fff;border-bottom:1px solid #e6eef6}
+.header-inner{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-weight:600;color:#3b82f6;font-size:20px}
+.nav-links{display:flex;gap:10px;align-items:center}
+.nav-link{color:#475569;text-decoration:none;padding:8px 10px;border-radius:6px;font-size:14px}
+.nav-link:hover{background:#eef2ff;color:#1e3a8a}
+
+/* Footer */
+.footer{background:#fff;border-top:1px solid #e6eef6;padding:10px 0;text-align:center;color:#64748b;font-size:13px}
+
+/* Cards & forms */
+.card{background:#fff;border-radius:8px;padding:18px;border:1px solid #e6eef6;box-shadow:0 1px 2px rgba(16,24,40,0.04)}
+.form-row{margin-bottom:12px}
+label{display:block;margin-bottom:6px;font-size:13px;color:#334155}
+.input, .select, .textarea {
+  width:100%;padding:10px;border-radius:6px;border:1px solid #d1e3f0;background:#fff;font-size:14px;color:#0f172a
+}
+.input:focus, .select:focus, .textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(59,130,246,0.08);border-color:#60a5fa}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+.btn-primary{background:#3b82f6;color:#fff}
+.btn-muted{background:#fff;border:1px solid #d1e3f0;color:#334155}
+.btn-danger{background:#ef4444;color:#fff}
+
+/* Table */
+.table{width:100%;border-collapse:collapse}
+.table th, .table td{padding:10px 12px;border-bottom:1px solid #eef2f6;text-align:left;font-size:14px}
+.table thead th{color:#475569;font-size:13px;background:transparent}
+
+/* small utilities */
+.row{display:flex;align-items:center;gap:10px}
+.space-between{display:flex;justify-content:space-between;align-items:center}
+.pill{padding:6px 8px;border-radius:999px;font-size:12px;border:1px solid #d1e3f0;background:#fff}
+
+/* Toast */
+.toast{position:fixed;right:18px;top:18px;background:#fff;border:1px solid #d1e3f0;padding:10px 14px;border-radius:8px;box-shadow:0 6px 18px rgba(2,6,23,0.06);z-index:60}
+
+/* Responsive */
+@media (max-width:720px){
+  .header-inner{padding:10px}
+  .main{padding:12px}
+  .nav-links{display:none}
+}
