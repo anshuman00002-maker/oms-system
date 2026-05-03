@@ -545,14 +545,15 @@ const styles = {
   },
   refreshButton: {
     padding: '12px 24px',
-    backgroundColor: '#2563eb',
+    backgroundColor: 'var(--burning-flame)',
     color: 'white',
     border: 'none',
     borderRadius: '8px',
     fontSize: '16px',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.2s'
+    transition: 'all 0.2s',
+    boxShadow: '0 4px 12px rgba(255, 86, 0, 0.25)'
   },
   statsContainer: {
     display: 'grid',
@@ -616,9 +617,9 @@ const styles = {
     transition: 'all 0.2s'
   },
   filterButtonActive: {
-    backgroundColor: '#2563eb',
+    backgroundColor: 'var(--blue-fantastic)',
     color: 'white',
-    borderColor: '#2563eb'
+    borderColor: 'var(--blue-fantastic)'
   },
   ordersGrid: {
     display: 'grid',

@@ -11,12 +11,13 @@ import {
   FiBarChart2,
 } from 'react-icons/fi';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, closeSidebar }) {
   const makeClass = ({ isActive }) =>
     'sidebar-link' + (isActive ? ' sidebar-link-active' : '');
 
   return (
-    <aside className="sidebar">
+    <>
+    <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-inner">
         {/* Brand */}
         <div className="sidebar-brand">
@@ -71,5 +72,11 @@ export default function Sidebar() {
         </nav>
       </div>
     </aside>
+    {/* Mobile Overlay */}
+    <div 
+      className={`sidebar-overlay ${isOpen ? 'open' : ''}`} 
+      onClick={closeSidebar}
+    />
+    </>
   );
 }

@@ -1,98 +1,100 @@
-	package com.example.orderservice;
-	
-	import java.util.ArrayList;
-	import java.util.List;
-	import java.util.Optional;
-	
-	import org.modelmapper.ModelMapper;
-	import org.springframework.beans.factory.annotation.Autowired;
-	import org.springframework.stereotype.Service;
-	
-	import com.example.model.Order;
-	import com.example.orderrepository.OrderRepository;
-	import com.example.payload.ApiResponse;
-	import com.example.payload.OrderDTO;
-	
-	@Service
-	public class OrderService {
-	
-	    @Autowired
-	    private OrderRepository orderrepo;
-	
-	    @Autowired
-	    private ModelMapper modelMapper;
-	    
-	    public OrderDTO EntityToDto(Order order) {
-			OrderDTO dto = this.modelMapper.map(order, OrderDTO.class);
-			return dto;	
-		}
-	
-	    public OrderDTO createOrder(OrderDTO dto) {
-	        
-	        Order order = this.modelMapper.map(dto, Order.class);
-	
-	       
-	        Order savedOrder = orderrepo.save(order);
-	
-	
-			OrderDTO savedDto = this.EntityToDto(savedOrder);
-					
-		
-			return savedDto;
-			
-	        
-	    }
-	
-		public List<OrderDTO> getAllOrders() {
-			List<Order> orders = this.orderrepo.findAll();
-			List<OrderDTO> orderDtos = new ArrayList<>();
-			for(Order order1 : orders) {
-				OrderDTO dto = this.EntityToDto(order1);
-			 orderDtos.add(dto);
-			
-			}
-			 return orderDtos;	
-		}
-	    
-		
-		public ApiResponse deleteOrder(Integer orderId){
-			Optional<Order> order = orderrepo.findById(orderId);
-			if(order.isPresent()) {
-				this.orderrepo.delete(order.get());
-			}
-			ApiResponse response = new ApiResponse();
-			response.setMessage("order deleted succesfully");
-			return response;
-		}
-	
-		public OrderDTO updateOrder(OrderDTO orderDto, Integer orderId) {
-		    Optional<Order> Order = this.orderrepo.findById(orderId);
-		    
-		    if (Order.isPresent()) {
-		        Order existingOrder = Order.get();
+package com.example.orderservice;
 
-		        
-		        modelMapper.map(orderDto, existingOrder);
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-		        
-		        Order updatedOrder = orderrepo.save(existingOrder);
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-		      
-		        return this.EntityToDto(updatedOrder);
-		    }
+import com.example.model.Order;
+import com.example.orderrepository.OrderRepository;
+import com.example.payload.ApiResponse;
+import com.example.payload.OrderDTO;
 
-		    return null; 
-		}
+@Service
+public class OrderService {
 
-		public OrderDTO getOrder(Integer orderId) {
-		Optional<Order> order = orderrepo.findById(orderId);
-		Order order1 = order.get();
-		OrderDTO orders =this.EntityToDto(order1);
-		return orders;
-		
-		}
+    @Autowired
+    private OrderRepository orderrepo;
 
-		
-	
-	
-	}
+    private OrderDTO entityToDto(Order order) {
+        OrderDTO dto = new OrderDTO();
+        dto.setOrderId(order.getOrderId());
+        dto.setExternalOrderId(order.getExternalOrderId());
+        dto.setProductName(order.getProductName());
+        dto.setQuantity(order.getQuantity());
+        dto.setCustomerName(order.getCustomerName());
+        dto.setCustomerEmail(order.getCustomerEmail());
+        dto.setCustomerPhone(order.getCustomerPhone());
+        dto.setShippingAddress(order.getShippingAddress());
+        dto.setTotalAmount(order.getTotalAmount());
+        dto.setStatus(order.getStatus());
+        dto.setPlatform(order.getPlatform());
+        dto.setOrderDate(order.getOrderDate());
+        return dto;
+    }
+
+    private Order dtoToEntity(OrderDTO dto) {
+        Order order = new Order();
+        order.setExternalOrderId(dto.getExternalOrderId());
+        order.setProductName(dto.getProductName());
+        order.setQuantity(dto.getQuantity());
+        order.setCustomerName(dto.getCustomerName());
+        order.setCustomerEmail(dto.getCustomerEmail());
+        order.setCustomerPhone(dto.getCustomerPhone());
+        order.setShippingAddress(dto.getShippingAddress());
+        order.setTotalAmount(dto.getTotalAmount());
+        order.setStatus(dto.getStatus());
+        order.setPlatform(dto.getPlatform());
+        order.setOrderDate(dto.getOrderDate());
+        return order;
+    }
+
+    public OrderDTO createOrder(OrderDTO dto) {
+        Order order = dtoToEntity(dto);
+        Order savedOrder = orderrepo.save(order);
+        return entityToDto(savedOrder);
+    }
+
+    public List<OrderDTO> getAllOrders() {
+        return orderrepo.findAll()
+                .stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ApiResponse deleteOrder(Long orderId) {
+        Optional<Order> order = orderrepo.findById(orderId);
+        if (order.isPresent()) {
+            orderrepo.delete(order.get());
+        }
+        ApiResponse response = new ApiResponse();
+        response.setMessage("Order deleted successfully");
+        return response;
+    }
+
+    public OrderDTO updateOrder(OrderDTO orderDto, Long orderId) {
+        Optional<Order> optOrder = orderrepo.findById(orderId);
+        if (optOrder.isPresent()) {
+            Order existingOrder = optOrder.get();
+            if (orderDto.getProductName() != null) existingOrder.setProductName(orderDto.getProductName());
+            if (orderDto.getQuantity() != null) existingOrder.setQuantity(orderDto.getQuantity());
+            if (orderDto.getCustomerName() != null) existingOrder.setCustomerName(orderDto.getCustomerName());
+            if (orderDto.getCustomerEmail() != null) existingOrder.setCustomerEmail(orderDto.getCustomerEmail());
+            if (orderDto.getCustomerPhone() != null) existingOrder.setCustomerPhone(orderDto.getCustomerPhone());
+            if (orderDto.getShippingAddress() != null) existingOrder.setShippingAddress(orderDto.getShippingAddress());
+            if (orderDto.getTotalAmount() != null) existingOrder.setTotalAmount(orderDto.getTotalAmount());
+            if (orderDto.getStatus() != null) existingOrder.setStatus(orderDto.getStatus());
+            if (orderDto.getPlatform() != null) existingOrder.setPlatform(orderDto.getPlatform());
+            Order updatedOrder = orderrepo.save(existingOrder);
+            return entityToDto(updatedOrder);
+        }
+        return null;
+    }
+
+    public OrderDTO getOrder(Long orderId) {
+        Optional<Order> order = orderrepo.findById(orderId);
+        return order.map(this::entityToDto).orElse(null);
+    }
+}

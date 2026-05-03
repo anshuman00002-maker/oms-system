@@ -40,9 +40,10 @@ public class SecurityConfig {
                 return corsConfig; // ✅ FIXED: was missing before
             }))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login", "/auth/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "/order").authenticated()
-                .requestMatchers("/order/**").authenticated()
+                .requestMatchers("/auth/login", "/auth/register", "/error").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/products").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                .requestMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex.authenticationEntryPoint(point))

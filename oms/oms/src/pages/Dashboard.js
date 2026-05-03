@@ -68,7 +68,7 @@ export default function Dashboard() {
             <p className="page-subtitle">Overview of your system</p>
           </div>
         </div>
-        <div className="card">
+        <div className="card slide-up">
           <p>Loading dashboard data...</p>
         </div>
       </div>
@@ -84,28 +84,28 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="card">
+      <div className="card slide-up">
         <h3>Welcome</h3>
         <p>Your Order Management System is ready!</p>
       </div>
 
       <div className="card-grid">
-        <div className="card">
+        <div className="card slide-up">
           <h4>Total Orders</h4>
           <p className="stat-number">{totalOrders}</p>
         </div>
         
-        <div className="card">
+        <div className="card slide-up">
           <h4>Orders Today</h4>
           <p className="stat-number">{ordersToday}</p>
         </div>
         
-        <div className="card">
+        <div className="card slide-up">
           <h4>Pending Orders</h4>
           <p className="stat-number">{pendingOrders}</p>
         </div>
         
-        <div className="card">
+        <div className="card slide-up">
           <h4>Low Stock Items</h4>
           <p className="stat-number">{lowStockItems}</p>
         </div>

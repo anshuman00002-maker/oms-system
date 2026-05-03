@@ -248,7 +248,7 @@ export default function Products() {
       </div>
 
       {/* Products Table */}
-      <div className="card">
+      <div className="card slide-up">
         <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between' }}>
           <h3>All Products</h3>
           <span style={{ color: '#64748b', fontSize: '14px' }}>
