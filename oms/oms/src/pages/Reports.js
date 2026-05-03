@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from '../api/axiosConfig';
 
 export default function Reports() {
   // State for all report data
@@ -26,12 +27,12 @@ export default function Reports() {
 
         // Fetch orders and products
         const [ordersRes, productsRes] = await Promise.all([
-          fetch('http://localhost:8080/api/orders'),
-          fetch('http://localhost:8080/api/products')
+          api.get('/api/orders'),
+          api.get('/api/products')
         ]);
 
-        const ordersData = await ordersRes.json();
-        const productsData = await productsRes.json();
+        const ordersData = ordersRes.data;
+        const productsData = productsRes.data;
 
         // Calculate Sales Report
         calculateSalesReport(ordersData);
@@ -57,12 +58,12 @@ export default function Reports() {
         setLoading(true);
 
         const [ordersRes, productsRes] = await Promise.all([
-          fetch('http://localhost:8080/api/orders'),
-          fetch('http://localhost:8080/api/products')
+          api.get('/api/orders'),
+          api.get('/api/products')
         ]);
 
-        const ordersData = await ordersRes.json();
-        const productsData = await productsRes.json();
+        const ordersData = ordersRes.data;
+        const productsData = productsRes.data;
 
         calculateSalesReport(ordersData);
         calculateInventoryReport(productsData, ordersData);

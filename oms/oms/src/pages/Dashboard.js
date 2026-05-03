@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import api from '../api/axiosConfig';
 
 export default function Dashboard() {
   // State to store dashboard data
@@ -17,12 +18,12 @@ export default function Dashboard() {
   async function fetchDashboardData() {
     try {
       // Fetch all orders
-      const ordersResponse = await fetch('http://localhost:8080/api/orders');
-      const ordersData = await ordersResponse.json();
+      const ordersResponse = await api.get('/api/orders');
+      const ordersData = ordersResponse.data;
       
       // Fetch all products for low stock count
-      const productsResponse = await fetch('http://localhost:8080/api/products');
-      const productsData = await productsResponse.json();
+      const productsResponse = await api.get('/api/products');
+      const productsData = productsResponse.data;
 
       // Calculate total orders
       setTotalOrders(ordersData.length);

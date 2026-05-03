@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const API_URL = 'http://localhost:8080';
-
-const AuthService = {
-  authHeader: () => {
-    const token = localStorage.getItem('oms_token');
-    return token ? { Authorization: `Bearer ${token}` } : {};
-  },
-  isAuthenticated: () => {
-    return !!localStorage.getItem('oms_token');
-  }
-};
+import api from '../api/axiosConfig';
 
 export default function OrderEnquiry() {
   const [orders, setOrders] = useState([]);
@@ -29,28 +18,16 @@ export default function OrderEnquiry() {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/orders`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...AuthService.authHeader()  // ✅ Add JWT token
-        }
-      });
-
-      if (response.status === 401) {
-        showToast('Session expired. Please login again.', 'error');
-        // Optional: redirect to login
-        // window.location.href = '/login';
-        return;
-      }
-
-      if (!response.ok) throw new Error('Failed to fetch orders');
-
-      const data = await response.json();
+      const response = await api.get('/api/orders');
+      const data = response.data;
       // Sort by most recent first
       const sortedOrders = data.sort((a, b) => b.orderId - a.orderId);
       setOrders(sortedOrders);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        showToast('Session expired. Please login again.', 'error');
+        return;
+      }
       console.error('Error fetching orders:', error);
       showToast('Failed to load orders from server', 'error');
     } finally {
@@ -60,29 +37,18 @@ export default function OrderEnquiry() {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          ...AuthService.authHeader()  // ✅ Add JWT token
-        },
-        body: JSON.stringify({ status: newStatus })
-      });
-
-      if (response.status === 401) {
-        showToast('Session expired. Please login again.', 'error');
-        return;
-      }
-
-      if (!response.ok) throw new Error('Failed to update order status');
-
-      const updatedOrder = await response.json();
+      const response = await api.put(`/api/orders/${orderId}/status`, { status: newStatus });
+      const updatedOrder = response.data;
       setOrders(prev =>
         prev.map(o => (o.orderId === orderId ? updatedOrder : o))
       );
       setSelectedOrder(updatedOrder);
       showToast(`Order status updated to ${newStatus}`, 'success');
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        showToast('Session expired. Please login again.', 'error');
+        return;
+      }
       console.error('Error updating order status:', error);
       showToast('Failed to update order status', 'error');
     }
@@ -92,25 +58,15 @@ export default function OrderEnquiry() {
     if (!window.confirm('Are you sure you want to delete this order?')) return;
 
     try {
-      const response = await fetch(`${API_URL}/api/orders/${orderId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          ...AuthService.authHeader()  // ✅ Add JWT token
-        }
-      });
-
-      if (response.status === 401) {
-        showToast('Session expired. Please login again.', 'error');
-        return;
-      }
-
-      if (!response.ok) throw new Error('Failed to delete order');
-
+      await api.delete(`/api/orders/${orderId}`);
       setOrders(prev => prev.filter(o => o.orderId !== orderId));
       showToast('Order deleted successfully', 'success');
       setSelectedOrder(null);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        showToast('Session expired. Please login again.', 'error');
+        return;
+      }
       console.error('Error deleting order:', error);
       showToast('Failed to delete order', 'error');
     }
