@@ -1,70 +1,105 @@
-# Getting Started with Create React App
+# Order Management System (OMS) Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the React frontend for the Order Management System. It provides a comprehensive dashboard for administrators and staff to manage orders, products, users, and view system reports.
 
-## Available Scripts
+## Tech Stack
 
-In the project directory, you can run:
+*   **React 19:** Frontend framework
+*   **React Router v7:** Client-side routing
+*   **Axios:** HTTP client for API requests
+*   **Create React App:** Project bootstrapping and build tooling
+*   **Vanilla CSS:** Styling and layout
 
-### `npm start`
+## Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```text
+src/
+├── api/          # Axios instances and API configurations
+├── components/   # Reusable UI components (Header, Sidebar, Toast, etc.)
+├── pages/        # Route components (Dashboard, Login, Orders, Products, etc.)
+├── services/     # Business logic and external service integrations
+├── styles/       # Global CSS stylesheets
+├── App.js        # Main application component and routing configuration
+└── index.js      # Entry point
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Step-by-Step Setup & Implementation Guide
 
-### `npm test`
+Follow these steps to set up the project locally and understand the core implementation flow.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Step 1: Prerequisites
 
-### `npm run build`
+Ensure you have the following installed on your local machine:
+*   [Node.js](https://nodejs.org/) (v16.x or later recommended)
+*   [npm](https://www.npmjs.com/) (usually comes with Node.js)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Step 2: Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clone the repository and navigate to the project directory:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+cd "oms-system/oms/oms"
+npm install
+```
 
-### `npm run eject`
+This will install all the necessary dependencies defined in `package.json`, including React, React Router, and Axios.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Step 3: Environment Configuration
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The application communicates with a backend API (e.g., Spring Boot). You may need to configure the API base URL.
+Check the `src/api` or `src/services` folder (e.g., `AuthService.js`) to ensure it points to the correct backend endpoint (usually `http://localhost:8080` for local development).
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Step 4: Running the Application Locally
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+To start the development server, run:
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+*   The app will compile and launch in your default browser.
+*   By default, it runs on [http://localhost:3000](http://localhost:3000).
+*   The page will automatically reload if you make edits to the source code.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Step 5: Understanding Core Implementation Features
 
-### Code Splitting
+As you develop or review the code, take note of the following implemented features:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1.  **Authentication & Authorization (`AuthService.js`, `Login.js`, `Register.js`):**
+    *   Handles user login and token management (likely JWT).
+    *   `PrivateRoute.js` and `RoleRoute.js` protect routes from unauthorized access based on user roles.
 
-### Analyzing the Bundle Size
+2.  **Navigation & Layout (`Sidebar.js`, `Header.js`):**
+    *   Provides the main shell of the application, allowing users to navigate between different modules.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3.  **Data Management Pages:**
+    *   **`Dashboard.js`**: Displays high-level metrics and summaries.
+    *   **`OrderEnquiry.js`**: Interface for searching, viewing, and managing customer orders.
+    *   **`Products.js`**: Interface for managing the inventory and product catalog.
+    *   **`Users.js`**: Admin interface for managing system users and roles.
+    *   **`Reports.js`**: Generates and displays business and sales reports.
 
-### Making a Progressive Web App
+### Step 6: Testing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+To run the interactive test watcher:
 
-### Advanced Configuration
+```bash
+npm test
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Step 7: Building for Production
 
-### Deployment
+When you are ready to deploy the application, run:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run build
+```
 
-### `npm run build` fails to minify
+*   This command builds the app for production to the `build` folder.
+*   It bundles React in production mode and optimizes the build for the best performance.
+*   The build is minified and the filenames include the hashes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Deployment
+
+The generated `build/` folder contains static assets that can be hosted on any static file server or cloud provider (e.g., Vercel, Netlify, AWS S3, Nginx).
+
